@@ -47,4 +47,10 @@ None
 Fixes
 =====
 
+<<<<<<< HEAD
 None
+=======
+- Fixed an issue where an ordered query with a specified limit that was much
+  larger than the available rows would result in ``OutOfMemoryError`` even
+  though the number of available rows could fit in memory.
+>>>>>>> 455570b898... Use a threshold above which switch from a bounded to an unbounded priority queue.
