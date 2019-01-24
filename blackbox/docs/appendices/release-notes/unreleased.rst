@@ -42,6 +42,9 @@ None
 Changes
 =======
 
+- Added ``ALTER CLUSTER DECOMMISSION <nodeId | nodeName>`` command that
+  triggers the existing node decommission functionality.
+
 - Added the ``pg_type.typlen`` column for improved postgresql compatibility.
 
 - Marked ``CREATE INGEST RULE`` and ``DROP INGEST RULE`` as deprecated. Given
