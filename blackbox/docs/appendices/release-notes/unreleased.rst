@@ -73,3 +73,5 @@ Changes
 
 Fixes
 =====
+
+- Fixed performance regression when inserting data using ``unnest()``.

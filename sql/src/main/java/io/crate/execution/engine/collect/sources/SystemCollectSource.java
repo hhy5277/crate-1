@@ -144,7 +144,8 @@ public class SystemCollectSource implements CollectSource {
                             supportMoveToStart,
                             records
                         )
-                    )
+                    ),
+            true
         );
     }
 
