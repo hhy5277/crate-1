@@ -608,4 +608,8 @@ public abstract class AstVisitor<R, C> {
     public R visitGCDanglingArtifacts(GCDanglingArtifacts gcDanglingArtifacts, C context) {
         return visitStatement(gcDanglingArtifacts, context);
     }
+
+    public R visitAlterClusterDecommissionNode(DecommissionNode decommissionNode, C context) {
+        return visitStatement(decommissionNode, context);
+    }
 }
