@@ -22,11 +22,11 @@
 
 package io.crate.expression.reference.information;
 
-import io.crate.Version;
 import io.crate.common.collections.Maps;
 import io.crate.execution.engine.collect.NestableCollectExpression;
 import io.crate.expression.reference.ObjectCollectExpression;
 import io.crate.metadata.RelationInfo;
+import org.elasticsearch.Version;
 
 import java.util.Map;
 
@@ -79,7 +79,7 @@ public class TablesVersionExpression extends ObjectCollectExpression<RelationInf
         @Override
         public void setNextRow(RelationInfo references) {
             Version version = TableExpressions.getVersion(references, property);
-            value = version == null ? null : version.number();
+            value = version == null ? null : version.externalNumber();
         }
 
         @Override
@@ -100,7 +100,7 @@ public class TablesVersionExpression extends ObjectCollectExpression<RelationInf
         @Override
         public void setNextRow(RelationInfo references) {
             Version version = TableExpressions.getVersion(references, property);
-            value = version == null ? null : version.esVersion.toString();
+            value = version == null ? null : version.toString();
         }
 
         @Override

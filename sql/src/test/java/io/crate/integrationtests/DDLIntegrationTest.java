@@ -22,13 +22,13 @@
 package io.crate.integrationtests;
 
 import com.google.common.collect.ImmutableMap;
-import io.crate.Version;
 import io.crate.action.sql.SQLActionException;
 import io.crate.metadata.PartitionName;
 import io.crate.metadata.RelationName;
 import io.crate.metadata.Schemas;
 import io.crate.testing.TestingHelpers;
 import io.crate.testing.UseRandomizedSchema;
+import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesResponse;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.settings.Settings;
@@ -56,7 +56,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
                 "clustered into 5 shards with (number_of_replicas = 1, \"write.wait_for_active_shards\"=1)");
         String expectedMapping = "{\"default\":{" +
                                  "\"dynamic\":\"true\",\"_meta\":{" +
-                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.esVersion.id + ",\"cratedb\":" + Version.CURRENT.id + "}}," +
+                                 "\"version\":{\"created\":{\"elasticsearch\": null,\"cratedb\":" + Version.CURRENT.id + "}}," +
                                  "\"primary_keys\":[\"col1\"]}," +
                                  "\"dynamic_templates\":[{\"strings\":{\"match_mapping_type\":\"string\",\"mapping\":{\"doc_values\":true,\"store\":false,\"type\":\"keyword\"}}}]," +
                                  "\"properties\":{" +
@@ -69,7 +69,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
                                   "\"settings\":{" +
                                   "\"index.number_of_replicas\":\"1\"," +
                                   "\"index.number_of_shards\":\"5\"," +
-                                  "\"index.version.created\":\"" + Version.CURRENT.esVersion.id + "\"" +
+                                  "\"index.version.created\":\" null" +
                                   "}}}";
 
         assertEquals(expectedMapping, getIndexMapping("test"));
@@ -93,7 +93,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
                                   "\"index.number_of_replicas\":\"0\"," +
                                   "\"index.number_of_shards\":\"5\"," +
                                   "\"index.refresh_interval\":\"0s\"," +
-                                  "\"index.version.created\":\"" + Version.CURRENT.esVersion.id + "\"" +
+                                  "\"index.version.created\":\"" + Version.CURRENT.id + "\"" +
                                   "}}}";
         JSONAssert.assertEquals(expectedSettings, getIndexSettings("test"), false);
 
@@ -103,7 +103,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
                                      "\"index.number_of_replicas\":\"0\"," +
                                      "\"index.number_of_shards\":\"5\"," +
                                      "\"index.refresh_interval\":\"5s\"," +
-                                     "\"index.version.created\":\"" + Version.CURRENT.esVersion.id + "\"" +
+                                     "\"index.version.created\":\"" + Version.CURRENT.id + "\"" +
                                      "}}}";
         JSONAssert.assertEquals(expectedSetSettings, getIndexSettings("test"), false);
 
@@ -113,7 +113,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
                                        "\"index.number_of_replicas\":\"0\"," +
                                        "\"index.number_of_shards\":\"5\"," +
                                        "\"index.refresh_interval\":\"1s\"," +
-                                       "\"index.version.created\":\"" + Version.CURRENT.esVersion.id + "\"" +
+                                       "\"index.version.created\":\"" + Version.CURRENT.id + "\"" +
                                        "}}}";
         JSONAssert.assertEquals(expectedResetSettings, getIndexSettings("test"), false);
     }
@@ -147,7 +147,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
                                   "\"settings\":{" +
                                   "\"index.number_of_replicas\":\"2\"," +
                                   "\"index.number_of_shards\":\"10\"," +
-                                  "\"index.version.created\":\"" + Version.CURRENT.esVersion.id + "\"" +
+                                  "\"index.version.created\":\"" + Version.CURRENT.id + "\"" +
                                   "}}}";
 
         JSONAssert.assertEquals(expectedMapping, getIndexMapping("test"), JSONCompareMode.LENIENT);
@@ -161,7 +161,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
                 "with (column_policy='strict', number_of_replicas = 0)");
         String expectedMapping = "{\"default\":{" +
                                  "\"dynamic\":\"strict\",\"_meta\":{" +
-                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.esVersion.id + ",\"cratedb\":" + Version.CURRENT.id + "}}," +
+                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.id + ",\"cratedb\":" + Version.CURRENT.id + "}}," +
                                  "\"primary_keys\":[\"col1\"]}," +
                                  "\"dynamic_templates\":[{\"strings\":{\"match_mapping_type\":\"string\",\"mapping\":{\"doc_values\":true,\"store\":false,\"type\":\"keyword\"}}}]," +
                                  "\"properties\":{" +
@@ -173,7 +173,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
                                   "\"settings\":{" +
                                   "\"index.number_of_replicas\":\"0\"," +
                                   "\"index.number_of_shards\":\"5\"," +
-                                  "\"index.version.created\":\"" + Version.CURRENT.esVersion.id + "\"" +
+                                  "\"index.version.created\":\"" + Version.CURRENT.id + "\"" +
                                   "}}}";
 
 
@@ -187,7 +187,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
         ensureYellow();
         String expectedMapping = "{\"default\":{" +
                                  "\"dynamic\":\"true\",\"_meta\":{" +
-                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.esVersion.id + ",\"cratedb\":" + Version.CURRENT.id + "}}}," +
+                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.id + ",\"cratedb\":" + Version.CURRENT.id + "}}}," +
                                  "\"dynamic_templates\":[{\"strings\":{\"match_mapping_type\":\"string\",\"mapping\":{\"doc_values\":true,\"store\":false,\"type\":\"keyword\"}}}]," +
                                  "\"properties\":{" +
                                  "\"col1\":{\"type\":\"geo_shape\",\"tree\":\"quadtree\",\"precision\":\"1.0m\",\"distance_error_pct\":0.25}}}}";
@@ -200,7 +200,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
         ensureYellow();
         String expectedMapping = "{\"default\":{" +
                                  "\"dynamic\":\"true\",\"_meta\":{" +
-                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.esVersion.id + ",\"cratedb\":" + Version.CURRENT.id + "}}}," +
+                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.id + ",\"cratedb\":" + Version.CURRENT.id + "}}}," +
                                  "\"dynamic_templates\":[{\"strings\":{\"match_mapping_type\":\"string\",\"mapping\":{\"doc_values\":true,\"store\":false,\"type\":\"keyword\"}}}]," +
                                  "\"properties\":{\"col1\":{\"type\":\"geo_shape\"}}}}";
         assertEquals(expectedMapping, getIndexMapping("test"));
@@ -716,7 +716,7 @@ public class DDLIntegrationTest extends SQLTransportIntegrationTest {
         String expectedMapping = "{\"default\":" +
                                  "{\"dynamic\":\"true\"," +
                                  "\"_meta\":{" +
-                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.esVersion.id + ",\"cratedb\":" + Version.CURRENT.id + "}}," +
+                                 "\"version\":{\"created\":{\"elasticsearch\":" + Version.CURRENT.id + ",\"cratedb\":" + Version.CURRENT.id + "}}," +
                                  "\"generated_columns\":{\"day\":\"date_trunc('day', ts)\"}}," +
                                  "\"dynamic_templates\":[{\"strings\":{\"match_mapping_type\":\"string\",\"mapping\":{\"doc_values\":true,\"store\":false,\"type\":\"keyword\"}}}]," +
                                  "\"properties\":{\"day\":{\"type\":\"date\",\"format\":\"epoch_millis||strict_date_optional_time\"},\"ts\":{\"type\":\"date\",\"format\":\"epoch_millis||strict_date_optional_time\"}}}}";

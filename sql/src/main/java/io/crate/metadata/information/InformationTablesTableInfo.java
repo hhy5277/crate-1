@@ -23,7 +23,6 @@ package io.crate.metadata.information;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import io.crate.Version;
 import io.crate.execution.engine.collect.NestableCollectExpression;
 import io.crate.expression.reference.information.TablesSettingsExpression;
 import io.crate.expression.reference.information.TablesVersionExpression;
@@ -39,6 +38,7 @@ import io.crate.metadata.table.ColumnPolicy;
 import io.crate.metadata.table.ColumnRegistrar;
 import io.crate.metadata.table.ShardedTable;
 import io.crate.types.DataTypes;
+import org.elasticsearch.Version;
 
 import java.util.List;
 import java.util.Map;

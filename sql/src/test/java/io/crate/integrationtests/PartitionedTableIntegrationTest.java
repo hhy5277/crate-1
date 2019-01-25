@@ -24,7 +24,6 @@ package io.crate.integrationtests;
 import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import io.crate.Version;
 import io.crate.action.sql.SQLActionException;
 import io.crate.execution.ddl.tables.AlterTableOperation;
 import io.crate.metadata.IndexMappings;
@@ -34,6 +33,7 @@ import io.crate.metadata.Schemas;
 import io.crate.testing.SQLResponse;
 import io.crate.testing.TestingHelpers;
 import io.crate.testing.UseRandomizedSchema;
+import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesRequest;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesResponse;
@@ -67,26 +67,22 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static com.carrotsearch.randomizedtesting.RandomizedTest.$;
 import static io.crate.Constants.DEFAULT_MAPPING_TYPE;
-import static io.crate.Version.CRATEDB_VERSION_KEY;
-import static io.crate.Version.ES_VERSION_KEY;
 import static io.crate.metadata.IndexMappings.VERSION_STRING;
 import static io.crate.testing.TestingHelpers.printedTable;
-import static org.hamcrest.Matchers.arrayContaining;
+import static org.elasticsearch.Version.CRATEDB_VERSION_KEY;
+import static org.elasticsearch.Version.ES_VERSION_KEY;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
@@ -2206,7 +2202,7 @@ public class PartitionedTableIntegrationTest extends SQLTransportIntegrationTest
         execute("insert into doc.p1 (id, p) values (1, 2)");
         execute("select version['created']['cratedb'] from information_schema.table_partitions where table_name='p1'");
 
-        assertThat(response.rows()[0][0], is(Version.CURRENT.number()));
+        assertThat(response.rows()[0][0], is(Version.CURRENT.externalNumber()));
     }
 
     private void writeOldVersionsToTemplate() throws Exception {

@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import io.crate.Constants;
-import io.crate.Version;
 import io.crate.action.sql.SessionContext;
 import io.crate.analyze.Analysis;
 import io.crate.analyze.CreateTableAnalyzedStatement;
@@ -32,6 +31,7 @@ import io.crate.test.integration.CrateDummyClusterServiceUnitTest;
 import io.crate.types.ArrayType;
 import io.crate.types.DataType;
 import io.crate.types.DataTypes;
+import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
@@ -1321,7 +1321,7 @@ public class DocIndexMetaDataTest extends CrateDummyClusterServiceUnitTest {
                         .endObject()
                         .startObject(Version.Property.UPGRADED.toString())
                             .field(Version.CRATEDB_VERSION_KEY, Version.CURRENT.id)
-                            .field(Version.ES_VERSION_KEY, Version.CURRENT.esVersion.id)
+                            .field(Version.ES_VERSION_KEY, Version.CURRENT.id)
                         .endObject()
                     .endObject()
                 .endObject()
@@ -1337,7 +1337,7 @@ public class DocIndexMetaDataTest extends CrateDummyClusterServiceUnitTest {
         DocIndexMetaData md = newMeta(metaData, "test1");
 
         assertThat(md.versionCreated().id, is(560499));
-        assertThat(md.versionCreated().esVersion.id, is(2040299));
+        assertThat(md.versionCreated().id, is(2040299));
         assertThat(md.versionUpgraded(), is(Version.CURRENT));
     }
 

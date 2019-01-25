@@ -22,8 +22,8 @@
 
 package io.crate.expression.reference.information;
 
-import io.crate.Version;
 import io.crate.metadata.table.StoredTable;
+import org.elasticsearch.Version;
 
 import javax.annotation.Nullable;
 

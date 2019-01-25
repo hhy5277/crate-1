@@ -20,8 +20,10 @@
 package org.elasticsearch;
 
 import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.SuppressForbidden;
+import org.elasticsearch.common.collect.MapBuilder;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Version implements Comparable<Version>, ToXContentFragment {
     /*
@@ -197,6 +200,7 @@ public class Version implements Comparable<Version>, ToXContentFragment {
         assert CURRENT.luceneVersion.equals(org.apache.lucene.util.Version.LATEST) : "Version must be upgraded to ["
                 + org.apache.lucene.util.Version.LATEST + "] is still set to [" + CURRENT.luceneVersion + "]";
     }
+
 
     public static Version readVersion(StreamInput in) throws IOException {
         return fromId(in.readVInt());
@@ -438,6 +442,7 @@ public class Version implements Comparable<Version>, ToXContentFragment {
     }
 
     public final int id;
+    private transient final int externalId;
     public final byte major;
     public final byte minor;
     public final byte revision;
@@ -446,6 +451,7 @@ public class Version implements Comparable<Version>, ToXContentFragment {
 
     Version(int id, org.apache.lucene.util.Version luceneVersion) {
         this.id = id;
+        this.externalId = id;
         this.major = (byte) ((id / 1000000) % 100);
         this.minor = (byte) ((id / 10000) % 100);
         this.revision = (byte) ((id / 100) % 100);
@@ -581,6 +587,10 @@ public class Version implements Comparable<Version>, ToXContentFragment {
         return sb.toString();
     }
 
+    public String externalNumber() {
+        return toString();
+    }
+
     public static String displayVersion(final Version version, final boolean isSnapshot) {
         return version + (isSnapshot ? "-SNAPSHOT" : "");
     }
@@ -659,5 +669,47 @@ public class Version implements Comparable<Version>, ToXContentFragment {
         }
         Collections.sort(versions);
         return versions;
+    }
+
+
+    public static final String CRATEDB_VERSION_KEY = "cratedb";
+    public static final String ES_VERSION_KEY = "elasticsearch";
+
+    public static Map<String, Integer> toMap(Version version) {
+        return MapBuilder.<String, Integer>newMapBuilder()
+            .put(CRATEDB_VERSION_KEY, version.externalId)
+            .put(ES_VERSION_KEY, version.id)
+            .map();
+    }
+
+    @Nullable
+    public static Version fromMap(@Nullable Map<String, Integer> versionMap) {
+        if (versionMap == null || versionMap.isEmpty()) {
+            return null;
+        }
+        return null; // TODO;
+    }
+
+    public static Map<String, String> toStringMap(Version version) {
+        return MapBuilder.<String, String>newMapBuilder()
+            .put(CRATEDB_VERSION_KEY, version.externalNumber())
+            .put(ES_VERSION_KEY, version.toString())
+            .map();
+    }
+
+    public enum Property {
+        CREATED,
+        UPGRADED;
+
+        private String nameLowerCase;
+
+        Property() {
+            this.nameLowerCase = name().toLowerCase(Locale.ENGLISH);
+        }
+
+        @Override
+        public String toString() {
+            return nameLowerCase;
+        }
     }
 }

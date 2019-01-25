@@ -22,12 +22,12 @@
 
 package io.crate.expression.reference.partitioned;
 
-import io.crate.Version;
 import io.crate.common.collections.Maps;
 import io.crate.execution.engine.collect.NestableCollectExpression;
 import io.crate.expression.reference.ObjectCollectExpression;
 import io.crate.expression.reference.information.TableExpressions;
 import io.crate.metadata.PartitionInfo;
+import org.elasticsearch.Version;
 
 import java.util.Map;
 
@@ -80,7 +80,7 @@ public class PartitionsVersionExpression extends ObjectCollectExpression<Partiti
         @Override
         public void setNextRow(PartitionInfo row) {
             Version version = TableExpressions.getVersion(row, property);
-            value = version == null ? null : version.number();
+            value = version == null ? null : version.externalNumber();
         }
 
         @Override
@@ -101,7 +101,7 @@ public class PartitionsVersionExpression extends ObjectCollectExpression<Partiti
         @Override
         public void setNextRow(PartitionInfo row) {
             Version version = TableExpressions.getVersion(row, property);
-            value = version == null ? null : version.esVersion.toString();
+            value = version == null ? null : version.toString();
         }
 
         @Override

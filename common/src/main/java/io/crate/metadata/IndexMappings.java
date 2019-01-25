@@ -22,7 +22,7 @@
 package io.crate.metadata;
 
 import com.google.common.annotations.VisibleForTesting;
-import io.crate.Version;
+import org.elasticsearch.Version;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.collect.MapBuilder;
 
